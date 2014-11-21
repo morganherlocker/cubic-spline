@@ -25,3 +25,9 @@ for(var i = 0; i < 50; i++) {
     console.log(spline(i*.1, xs, ys));
 }
 ```
+
+###test
+
+```sh
+npm test
+```
