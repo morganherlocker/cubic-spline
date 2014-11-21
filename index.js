@@ -41,9 +41,7 @@ function solve (A, ks) {
     // pivot for column
     var i_max = 0; var vali = Number.NEGATIVE_INFINITY;
     for(var i=k; i<m; i++) if(A[i][k]>vali) { i_max = i; vali = A[i][k];}
-    swapRows(A, k, i_max);
-    
-    if(A[i_max][i] == 0) console.log("matrix is singular!");
+    swapRows(A, k, i_max);    
     
     // for all rows below pivot
     for(var i=k+1; i<m; i++)

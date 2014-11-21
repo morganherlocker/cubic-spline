@@ -1,0 +1,30 @@
+{
+  "name": "cubic-spline",
+  "version": "1.0.0",
+  "description": "spline interpolation",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/morganherlocker/cubic-spline.git"
+  },
+  "keywords": [
+    "cubic",
+    "spline",
+    "interpolation",
+    "line",
+    "smooth",
+    "smoothing"
+  ],
+  "author": "morganherlocker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/morganherlocker/cubic-spline/issues"
+  },
+  "homepage": "https://github.com/morganherlocker/cubic-spline",
+  "devDependencies": {
+    "tape": "^3.0.3"
+  }
+}
