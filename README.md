@@ -1,4 +1,4 @@
-cubic-spine
+cubic-spline
 ===
 
 A slight modification of [Ivan Kuckir's cubic spline implementation](http://blog.ivank.net/interpolation-with-cubic-splines.html), cubic-spline guesses the value of y for any x value on a line. This is helpful for smoothing line graphs.
