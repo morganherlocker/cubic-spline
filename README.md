@@ -3,13 +3,13 @@ cubic-spline
 
 A slight modification of [Ivan Kuckir's cubic spline implementation](http://blog.ivank.net/interpolation-with-cubic-splines.html), cubic-spline guesses the value of y for any x value on a line. This is helpful for smoothing line graphs.
 
-###install
+### installation
 
 ```sh
 npm install cubic-spline
 ```
 
-###usage
+### usage
 
 ```js
 var spline = require('cubic-spline');
@@ -26,7 +26,7 @@ for(var i = 0; i < 50; i++) {
 }
 ```
 
-###test
+### test
 
 ```sh
 npm test
