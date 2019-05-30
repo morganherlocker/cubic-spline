@@ -1,16 +1,19 @@
-var spline = require('./');
-var test = require('tape');
+const Spline = require('./');
+const test = require('tape');
 
 test('spline', function(t) {
-  var xs = [1, 2, 3, 4, 5];
-  var ys = [9, 3, 6, 2, 4];
+  const xs = [1, 2, 3, 4, 5];
+  const ys = [9, 3, 6, 2, 4];
+
+  // new a Spline object
+  const spline = new Spline(xs, ys);
 
   // get Y at arbitrary X
-  t.equal(spline(1.4, xs, ys), 5.586);
+  t.equal(spline.at(1.4), 5.586);
 
   // interpolate a line at a higher resolution
   for (var i = 0; i < 50; i++) {
-    t.equal(typeof spline(i * 0.1, xs, ys), 'number');
+    t.equal(typeof spline.at(i * 0.1), 'number');
   }
   t.end();
 });
