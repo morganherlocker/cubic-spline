@@ -11,10 +11,10 @@ npm install cubic-spline
 ## usage
 
 ```js
-var Spline = require('cubic-spline');
+const Spline = require('cubic-spline');
 
-var xs = [1, 2, 3, 4, 5];
-var ys = [9, 3, 6, 2, 4];
+const xs = [1, 2, 3, 4, 5];
+const ys = [9, 3, 6, 2, 4];
 
 // new a Spline object
 const spline = new Spline(xs, ys);
@@ -23,7 +23,7 @@ const spline = new Spline(xs, ys);
 console.log(spline.at(1.4));
 
 // interpolate a line at a higher resolution
-for (var i = 0; i < 50; i++) {
+for (let i = 0; i < 50; i++) {
   console.log(spline.at(i * 0.1));
 }
 ```
