@@ -80,7 +80,7 @@ function solve(A, ks) {
     // for all rows below pivot
     for (let i = k + 1; i < m; i++) {
       for (let j = k + 1; j < m + 1; j++) {
-        if (if (A[k][k]) {
+        if (A[k][k]) {
           A[i][j] = A[i][j] - A[k][j] * (A[i][k] / A[k][k]);
         }
       }
