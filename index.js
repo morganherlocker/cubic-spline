@@ -80,7 +80,9 @@ function solve(A, ks) {
     // for all rows below pivot
     for (let i = k + 1; i < m; i++) {
       for (let j = k + 1; j < m + 1; j++) {
-        A[i][j] = A[i][j] - A[k][j] * (A[i][k] / A[k][k]);
+        if (A[k][k]) {
+          A[i][j] = A[i][j] - A[k][j] * (A[i][k] / A[k][k]);
+        }
       }
       A[i][k] = 0;
     }
@@ -90,7 +92,10 @@ function solve(A, ks) {
     i >= 0;
     i-- // rows = columns
   ) {
-    const v = A[i][m] / A[i][i];
+    var v=0;
+    if(A[i][i]) {
+      v = A[i][m] / A[i][i];
+    }
     ks[i] = v;
     for (
       let j = i - 1;
