@@ -42,9 +42,28 @@ module.exports = class Spline {
     return solve(A, ks);
   }
 
+  /**
+   * inspired by https://stackoverflow.com/a/40850313/4417327
+   */
+  getIndexBefore(target) {
+    let low = 0;
+    let high = this.xs.length;
+    let mid = 0;
+    while (low < high) {
+      mid = Math.floor((low + high) / 2);
+      if (this.xs[mid] < target && mid !== low) {
+        low = mid;
+      } else if (this.xs[mid] > target && mid !== high) {
+        high = mid;
+      } else {
+        high = low;
+      }
+    }
+    return low + 1;
+  }
+
   at(x) {
-    let i = 1;
-    while (this.xs[i] < x) i++;
+    let i = this.getIndexBefore(x);
     const t = (x - this.xs[i - 1]) / (this.xs[i] - this.xs[i - 1]);
     const a =
       this.ks[i - 1] * (this.xs[i] - this.xs[i - 1]) -
