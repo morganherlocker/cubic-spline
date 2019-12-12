@@ -33,3 +33,9 @@ for (let i = 0; i < 50; i++) {
 ```sh
 npm test
 ```
+
+## lint
+
+```sh
+npm run lint
+```

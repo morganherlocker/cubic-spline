@@ -113,8 +113,8 @@ function solve(A, ks) {
     i >= 0;
     i-- // rows = columns
   ) {
-    var v=0;
-    if(A[i][i]) {
+    var v = 0;
+    if (A[i][i]) {
       v = A[i][m] / A[i][i];
     }
     ks[i] = v;
