@@ -2,7 +2,7 @@ module.exports = class Spline {
   constructor(xs, ys) {
     this.xs = xs;
     this.ys = ys;
-    this.ks = this.getNaturalKs(new Array(this.xs.length).fill(0));
+    this.ks = this.getNaturalKs(new Float64Array(this.xs.length));
   }
 
   getNaturalKs(ks) {
@@ -80,32 +80,34 @@ module.exports = class Spline {
 };
 
 function solve(A, ks) {
-  let m = A.length;
-  for (
-    let k = 0;
-    k < m;
-    k++ // column
-  ) {
-    // pivot for column
+  const m = A.length;
+  let h = 0;
+  let k = 0;
+  while (h < m && k <= m) {
     let i_max = 0;
-    let vali = Number.NEGATIVE_INFINITY;
-    for (let i = k; i < m; i++)
-      if (A[i][k] > vali) {
+    let max = -Infinity;
+    for (let i = h; i < m; i++) {
+      const v = Math.abs(A[i][k]);
+      if (v > max) {
         i_max = i;
-        vali = A[i][k];
+        max = v;
       }
-    swapRows(A, k, i_max);
+    }
 
-    // for all rows below pivot
-    for (let i = k + 1; i < m; i++) {
-      for (let j = k + 1; j < m + 1; j++) {
-        if (A[k][k]) {
-          A[i][j] = A[i][j] - A[k][j] * (A[i][k] / A[k][k]);
-        }
+    if (A[i_max][k] === 0) {
+      k++;
+    } else {
+      swapRows(A, h, i_max);
+      for (let i = h + 1; i < m; i++) {
+        const f = A[i][k] / A[h][k];
+        A[i][k] = 0;
+        for (let j = k + 1; j <= m; j++) A[i][j] -= A[h][j] * f;
       }
-      A[i][k] = 0;
+      h++;
+      k++;
     }
   }
+
   for (
     let i = m - 1;
     i >= 0;
@@ -130,10 +132,7 @@ function solve(A, ks) {
 
 function zerosMat(r, c) {
   const A = [];
-  for (let i = 0; i < r; i++) {
-    A.push([]);
-    for (let j = 0; j < c; j++) A[i].push(0);
-  }
+  for (let i = 0; i < r; i++) A.push(new Float64Array(c));
   return A;
 }
 
