@@ -53,7 +53,7 @@ module.exports = class Spline {
       mid = Math.floor((low + high) / 2);
       if (this.xs[mid] < target && mid !== low) {
         low = mid;
-      } else if (this.xs[mid] > target && mid !== high) {
+      } else if (this.xs[mid] >= target && mid !== high) {
         high = mid;
       } else {
         high = low;
