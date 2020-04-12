@@ -61,3 +61,23 @@ test("speed", function(t) {
   }
   t.end();
 });
+
+test("not-a-knot spline", function(t) {
+  const xs = [0, 1, 2, 3, 4, 5];
+  const ys = [0, -1.5, -2.0, -1.5, 0.0, 2.5];
+
+  // new not-a-knot Spline object
+  const spline = new Spline(xs, ys, { splineType: "not-a-knot" });
+
+  const interpolant = [0.3, 0.5, 1.2, 3.9, 4.1, 4.999];
+  const expected = [-0.555, -0.875, -1.68, -0.195, 0.205, 2.4970005];
+
+  for (var i = 0; i < expected.length; i++) {
+    t.equal(roundToN(spline.at(interpolant[i]) - expected[i], 8), 0);
+  }
+  t.end();
+});
+
+function roundToN(x, n) {
+  return Math.round((x + Number.EPSILON) * Math.pow(10, n)) / Math.pow(10, n);
+}
