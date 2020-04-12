@@ -9,35 +9,37 @@ module.exports = class Spline {
     const n = this.xs.length - 1;
     const A = zerosMat(n + 1, n + 2);
 
+    let deltaX;
+    let deltaY;
+    let deltaXnext = this.xs[1] - this.xs[0];
+    let deltaYnext = this.ys[1] - this.ys[0];
+
     for (
       let i = 1;
       i < n;
       i++ // rows
     ) {
-      A[i][i - 1] = 1 / (this.xs[i] - this.xs[i - 1]);
-      A[i][i] =
-        2 *
-        (1 / (this.xs[i] - this.xs[i - 1]) + 1 / (this.xs[i + 1] - this.xs[i]));
-      A[i][i + 1] = 1 / (this.xs[i + 1] - this.xs[i]);
-      A[i][n + 1] =
-        3 *
-        ((this.ys[i] - this.ys[i - 1]) /
-          ((this.xs[i] - this.xs[i - 1]) * (this.xs[i] - this.xs[i - 1])) +
-          (this.ys[i + 1] - this.ys[i]) /
-            ((this.xs[i + 1] - this.xs[i]) * (this.xs[i + 1] - this.xs[i])));
+      deltaX = deltaXnext;
+      deltaY = deltaYnext;
+      deltaXnext = this.xs[i + 1] - this.xs[i];
+      deltaYnext = this.ys[i + 1] - this.ys[i];
+
+      A[i][i - 1] = 1 / deltaX;
+      A[i][i] = 2 * (1 / deltaX + 1 / deltaXnext);
+      A[i][i + 1] = 1 / deltaXnext;
+      A[i][n + 1] = 3 * (deltaY / deltaX ** 2 + deltaYnext / deltaXnext ** 2);
     }
 
-    A[0][0] = 2 / (this.xs[1] - this.xs[0]);
-    A[0][1] = 1 / (this.xs[1] - this.xs[0]);
-    A[0][n + 1] =
-      (3 * (this.ys[1] - this.ys[0])) /
-      ((this.xs[1] - this.xs[0]) * (this.xs[1] - this.xs[0]));
+    A[n][n - 1] = 1 / deltaXnext;
+    A[n][n] = 2 / deltaXnext;
+    A[n][n + 1] = (3 * deltaYnext) / deltaXnext ** 2;
 
-    A[n][n - 1] = 1 / (this.xs[n] - this.xs[n - 1]);
-    A[n][n] = 2 / (this.xs[n] - this.xs[n - 1]);
-    A[n][n + 1] =
-      (3 * (this.ys[n] - this.ys[n - 1])) /
-      ((this.xs[n] - this.xs[n - 1]) * (this.xs[n] - this.xs[n - 1]));
+    deltaX = this.xs[1] - this.xs[0];
+    deltaY = this.ys[1] - this.ys[0];
+
+    A[0][0] = 2 / deltaX;
+    A[0][1] = 1 / deltaX;
+    A[0][n + 1] = (3 * deltaY) / deltaX ** 2;
 
     return solve(A, ks);
   }
