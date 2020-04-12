@@ -1,11 +1,16 @@
+const defaultOptions = {
+  splineType: "natural",
+};
+
 module.exports = class Spline {
-  constructor(xs, ys) {
+  constructor(xs, ys, options) {
     this.xs = xs;
     this.ys = ys;
-    this.ks = this.getNaturalKs(new Float64Array(this.xs.length));
+    this.options = Object.assign({}, defaultOptions, options);
+    this.ks = this.getKs(new Float64Array(this.xs.length));
   }
 
-  getNaturalKs(ks) {
+  getKs(ks) {
     const n = this.xs.length - 1;
     const A = zerosMat(n + 1, n + 2);
 
@@ -30,16 +35,35 @@ module.exports = class Spline {
       A[i][n + 1] = 3 * (deltaY / deltaX ** 2 + deltaYnext / deltaXnext ** 2);
     }
 
-    A[n][n - 1] = 1 / deltaXnext;
-    A[n][n] = 2 / deltaXnext;
-    A[n][n + 1] = (3 * deltaYnext) / deltaXnext ** 2;
+    if (this.options.splineType === "natural") {
+      A[n][n - 1] = 1 / deltaXnext;
+      A[n][n] = 2 / deltaXnext;
+      A[n][n + 1] = (3 * deltaYnext) / deltaXnext ** 2;
 
-    deltaX = this.xs[1] - this.xs[0];
-    deltaY = this.ys[1] - this.ys[0];
+      deltaX = this.xs[1] - this.xs[0];
+      deltaY = this.ys[1] - this.ys[0];
 
-    A[0][0] = 2 / deltaX;
-    A[0][1] = 1 / deltaX;
-    A[0][n + 1] = (3 * deltaY) / deltaX ** 2;
+      A[0][0] = 2 / deltaX;
+      A[0][1] = 1 / deltaX;
+      A[0][n + 1] = (3 * deltaY) / deltaX ** 2;
+    } else if (this.options.splineType === "not-a-knot") {
+      A[n][n - 2] = 1 / deltaX ** 2;
+      A[n][n - 1] = 1 / deltaX ** 2 - 1 / deltaXnext ** 2;
+      A[n][n] = -1 / deltaXnext ** 2;
+      A[n][n + 1] = 2 * (deltaY / deltaX ** 3 - deltaYnext / deltaXnext ** 3);
+
+      deltaX = this.xs[1] - this.xs[0];
+      deltaXnext = this.xs[2] - this.xs[1];
+      deltaY = this.ys[1] - this.ys[0];
+      deltaYnext = this.ys[2] - this.ys[1];
+
+      A[0][0] = 1 / deltaX ** 2;
+      A[0][1] = 1 / deltaX ** 2 - 1 / deltaXnext ** 2;
+      A[0][2] = -1 / deltaXnext ** 2;
+      A[0][n + 1] = 2 * (deltaY / deltaX ** 3 - deltaYnext / deltaXnext ** 3);
+    } else {
+      throw new Error(`Invalid splineType ${this.options.splineType}`);
+    }
 
     return solve(A, ks);
   }
