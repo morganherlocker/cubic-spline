@@ -18,6 +18,19 @@ test("spline", function (t) {
   t.end();
 });
 
+test("extrapolate outside bounds", function (t) {
+  const xs = [0, 1];
+  const ys = [0, 1];
+
+  const spline = new Spline(xs, ys);
+
+  // In practice you would only want to do this slightly outside the bounds
+  t.equal(spline.at(-1), -1);
+  t.equal(spline.at(2), 2);
+
+  t.end();
+});
+
 test("speed", function (t) {
   let arraySizes = [10, 100, 1000, 2000, 4000];
   let arraySpeed = [];
