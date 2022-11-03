@@ -4,6 +4,8 @@
   "description": "spline interpolation",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "test": "node test.js",
     "lint": "prettier **/*.js **/*.json --write"
   },
@@ -27,6 +29,7 @@
   "homepage": "https://github.com/morganherlocker/cubic-spline",
   "devDependencies": {
     "prettier": "2.7.1",
-    "tape": "^5.6.1"
+    "tape": "^5.6.1",
+    "typescript": "~4.8.4"
   }
 }
