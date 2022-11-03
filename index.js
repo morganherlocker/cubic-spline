@@ -59,6 +59,11 @@ module.exports = class Spline {
         high = low;
       }
     }
+
+    if (low === this.xs.length - 1) {
+      return this.xs.length - 1;
+    }
+
     return low + 1;
   }
 
