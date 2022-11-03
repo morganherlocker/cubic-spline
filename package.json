@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/morganherlocker/cubic-spline",
   "devDependencies": {
+    "prettier": "2.7.1",
     "tape": "^5.6.1"
   }
 }
