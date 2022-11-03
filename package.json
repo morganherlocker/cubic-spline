@@ -3,12 +3,18 @@
   "version": "3.0.3",
   "description": "spline interpolation",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test": "node test.js",
-    "lint": "prettier **/*.js **/*.json --write"
+    "lint": "prettier **/*.js **/*.json --write",
+    "prepublishOnly": "npm run build"
   },
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/morganherlocker/cubic-spline.git"
