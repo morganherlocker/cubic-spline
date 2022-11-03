@@ -1,11 +1,15 @@
-module.exports = class Spline {
-  constructor(xs, ys) {
+class Spline {
+  readonly xs: number[];
+  readonly ys: number[];
+  readonly ks: Float64Array;
+
+  constructor(xs: number[], ys: number[]) {
     this.xs = xs;
     this.ys = ys;
     this.ks = this.getNaturalKs(new Float64Array(this.xs.length));
   }
 
-  getNaturalKs(ks) {
+  getNaturalKs(ks: Float64Array): Float64Array {
     const n = this.xs.length - 1;
     const A = zerosMat(n + 1, n + 2);
 
@@ -45,7 +49,7 @@ module.exports = class Spline {
   /**
    * inspired by https://stackoverflow.com/a/40850313/4417327
    */
-  getIndexBefore(target) {
+  getIndexBefore(target: number): number {
     let low = 0;
     let high = this.xs.length;
     let mid = 0;
@@ -67,7 +71,7 @@ module.exports = class Spline {
     return low + 1;
   }
 
-  at(x) {
+  at(x: number): number {
     let i = this.getIndexBefore(x);
     const t = (x - this.xs[i - 1]) / (this.xs[i] - this.xs[i - 1]);
     const a =
@@ -82,9 +86,11 @@ module.exports = class Spline {
       t * (1 - t) * (a * (1 - t) + b * t);
     return q;
   }
-};
+}
 
-function solve(A, ks) {
+export = Spline;
+
+function solve(A: Float64Array[], ks: Float64Array): Float64Array {
   const m = A.length;
   let h = 0;
   let k = 0;
@@ -135,13 +141,13 @@ function solve(A, ks) {
   return ks;
 }
 
-function zerosMat(r, c) {
+function zerosMat(r: number, c: number): Float64Array[] {
   const A = [];
   for (let i = 0; i < r; i++) A.push(new Float64Array(c));
   return A;
 }
 
-function swapRows(m, k, l) {
+function swapRows(m: Float64Array[], k: number, l: number): void {
   let p = m[k];
   m[k] = m[l];
   m[l] = p;
