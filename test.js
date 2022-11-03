@@ -1,7 +1,7 @@
 const Spline = require("./");
 const test = require("tape");
 
-test("spline", function(t) {
+test("spline", function (t) {
   const xs = [1, 2, 3, 4, 5];
   const ys = [9, 3, 6, 2, 4];
 
@@ -18,7 +18,7 @@ test("spline", function(t) {
   t.end();
 });
 
-test("speed", function(t) {
+test("speed", function (t) {
   let arraySizes = [10, 100, 1000, 2000, 4000];
   let arraySpeed = [];
   let arrayInitialization = [];
