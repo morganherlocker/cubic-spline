@@ -30,3 +30,5 @@ node_modules
 # Compiled output
 index.js
 index.d.ts
+
+.idea
