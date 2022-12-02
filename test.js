@@ -18,6 +18,21 @@ test("spline", function (t) {
   t.end();
 });
 
+// '#B3E8E0', '#00B197', '#008869' (as HDV values)
+test("spline: color test", function (t) {
+  const xs = [0.228448275862069, 1, 1];
+  const ys = [0.909803921568627, 0.694117647058823, 0.533333333333333];
+
+  // new a Spline object
+  const spline = new Spline(xs, ys);
+
+  // get Y at arbitrary X
+  t.equal(spline.at(0.2), 0.8772301966635203);
+  t.notEqual(spline.at(0.2), NaN);
+
+  t.end();
+});
+
 test("extrapolate outside bounds", function (t) {
   const xs = [0, 1];
   const ys = [0, 1];

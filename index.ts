@@ -10,38 +10,50 @@ class Spline {
   }
 
   getNaturalKs(ks: Float64Array): Float64Array {
+    debugger;
     const n = this.xs.length - 1;
     const A = zerosMat(n + 1, n + 2);
 
-    for (
-      let i = 1;
-      i < n;
-      i++ // rows
-    ) {
-      A[i][i - 1] = 1 / (this.xs[i] - this.xs[i - 1]);
-      A[i][i] =
-        2 *
-        (1 / (this.xs[i] - this.xs[i - 1]) + 1 / (this.xs[i + 1] - this.xs[i]));
-      A[i][i + 1] = 1 / (this.xs[i + 1] - this.xs[i]);
-      A[i][n + 1] =
-        3 *
-        ((this.ys[i] - this.ys[i - 1]) /
-          ((this.xs[i] - this.xs[i - 1]) * (this.xs[i] - this.xs[i - 1])) +
-          (this.ys[i + 1] - this.ys[i]) /
-            ((this.xs[i + 1] - this.xs[i]) * (this.xs[i + 1] - this.xs[i])));
+    // rows
+    for (let i = 1; i < n; i++) {
+      const a = this.xs[i] - this.xs[i - 1];
+      const r = this.xs[i + 1] - this.xs[i];
+      const l = this.ys[i + 1] - this.ys[i];
+
+      let c = 1 / r;
+      if (r === 0) {
+        c = 0;
+      }
+
+      let z = l / (r * r);
+
+      if (r === 0) {
+        z = 0;
+      }
+
+      A[i][i - 1] = 1 / a;
+      A[i][i] = 2 * (1 / a + c);
+      A[i][i + 1] = c;
+      A[i][n + 1] = 3 * (a / (a * a) + z);
     }
 
-    A[0][0] = 2 / (this.xs[1] - this.xs[0]);
-    A[0][1] = 1 / (this.xs[1] - this.xs[0]);
-    A[0][n + 1] =
-      (3 * (this.ys[1] - this.ys[0])) /
-      ((this.xs[1] - this.xs[0]) * (this.xs[1] - this.xs[0]));
+    const a = this.xs[1] - this.xs[0];
 
-    A[n][n - 1] = 1 / (this.xs[n] - this.xs[n - 1]);
-    A[n][n] = 2 / (this.xs[n] - this.xs[n - 1]);
-    A[n][n + 1] =
-      (3 * (this.ys[n] - this.ys[n - 1])) /
-      ((this.xs[n] - this.xs[n - 1]) * (this.xs[n] - this.xs[n - 1]));
+    A[0][0] = 2 / a;
+    A[0][1] = 1 / a;
+    A[0][n + 1] = (3 * a) / (a * a);
+
+    let l = this.xs[n] - this.xs[n - 1];
+
+    if (l <= 0) {
+      A[n][n - 1] = 0;
+      A[n][n] = 0;
+      A[n][n + 1] = 0;
+    } else {
+      A[n][n - 1] = 1 / l;
+      A[n][n] = 2 / l;
+      A[n][n + 1] = (3 * l) / (l * l);
+    }
 
     return solve(A, ks);
   }
