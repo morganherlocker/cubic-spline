@@ -30,3 +30,4 @@ node_modules
 # Compiled output
 index.js
 index.d.ts
+cubic-spline-for-browser.js

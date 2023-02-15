@@ -5,6 +5,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
+    "browserify": "npm run build; browserify index.js -o cubic-spline-for-browser.js --standalone Spline",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test": "node test.js",
@@ -12,6 +13,7 @@
     "prepublishOnly": "npm run build"
   },
   "files": [
+    "cubic-spline-for-browser.js",
     "index.js",
     "index.d.ts"
   ],
@@ -34,6 +36,7 @@
   },
   "homepage": "https://github.com/morganherlocker/cubic-spline",
   "devDependencies": {
+    "browserify": "^17.0.0",
     "prettier": "2.7.1",
     "tape": "^5.6.1",
     "typescript": "~4.8.4"
